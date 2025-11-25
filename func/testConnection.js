@@ -11,8 +11,5 @@ export const testConnections = async (mysqlConn, pgPool) => {
 
     } catch (err) {
         console.error("Connection test failed:", err.message);
-    } finally {
-        await mysqlConn.end();
-        await pgPool.end();
     }
 }

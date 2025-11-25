@@ -1,6 +1,6 @@
 import format from "pg-format";
-import { chunkArray } from "../helper/chunk.js";
-import { levelMap, moduleMap } from "../helper/map.js";
+import { chunkArray } from "../../helper/chunk.js";
+import { levelMap, moduleMap } from "../../helper/map.js";
 
 export const levelPermissions = async (mysqlConn, pgPool) =>{
     console.log(`Transferring level Permissions...`);
@@ -48,6 +48,9 @@ export const levelPermissions = async (mysqlConn, pgPool) =>{
     // Insert into Postgres in Batches
     const batches = chunkArray(values, 100); // 100 at a time
 
+    const totalBatch = Math.ceil(rows.length / 100);
+    let epoch = 1
+
     for (const batch of batches) {
         const query = format(
             `INSERT INTO level_permission (
@@ -58,8 +61,9 @@ export const levelPermissions = async (mysqlConn, pgPool) =>{
 
         await pgPool.query(query);
         // console.log(query); // For testing, log the query instead of executing
+        epoch++;
 
-        console.log('All permissions inserted in batches of 100');
+        console.log(`Level Permissions Batch: ${epoch} / ${totalBatch}`);
     }
 
     // Remove existing permissions for module_id = 64, these modules do not exist in new system

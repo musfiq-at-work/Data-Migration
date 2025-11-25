@@ -1,6 +1,6 @@
 import format from "pg-format";
-import { chunkArray } from "../helper/chunk.js";
-import { deptMap, levelMap, activeStatusMap } from "../helper/map.js";
+import { chunkArray } from "../../helper/chunk.js";
+import { deptMap, levelMap, activeStatusMap } from "../../helper/map.js";
 
 export const transferUsers = async (mysqlConn, pgPool) =>{
     console.log(`Transferring users...`);
@@ -48,6 +48,9 @@ export const transferUsers = async (mysqlConn, pgPool) =>{
     // Insert into Postgres in Batches
     const batches = chunkArray(values, 100); // 100 at a time
 
+    const totalBatch = Math.ceil(rows.length / 100);
+    let epoch = 1
+
     const deletedUsers = await pgPool.query(`DELETE FROM users`);
     console.log(`Deleted ${deletedUsers.rowCount} existing users in Postgres before transfer.`);
 
@@ -62,7 +65,9 @@ export const transferUsers = async (mysqlConn, pgPool) =>{
 
         await pgPool.query(query);
 
-        console.log('All users inserted in batches of 100');
+        epoch++;
+
+        console.log(`Users Batch: ${epoch} / ${totalBatch}`);
     }
 
     console.log(`User transfer completed. Total ${data.length} users transferred.`);
