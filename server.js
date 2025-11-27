@@ -1,12 +1,8 @@
 import { MySQLConnection } from './DB/mysql.js'
 import { connectPostgres } from "./DB/postgres.js";
 import { 
-  testConnections,
-  transferUsers,
-  levelPermissions,
-  countries,
-  currencies,
-  companies
+  testConnections, transferUsers, levelPermissions, countries,
+  currencies, companies, overSeasOffices, paymentTerms, destinations
 } from './func/index.js'
 import dotenv from "dotenv";
 
@@ -22,7 +18,9 @@ const pgPool = connectPostgres();
 // await countries(mysqlConn, pgPool);
 // await currencies(mysqlConn, pgPool);
 // await companies(mysqlConn, pgPool);
-
+// await overSeasOffices(mysqlConn, pgPool);
+// await paymentTerms(mysqlConn, pgPool);
+await destinations(mysqlConn, pgPool);
 // Close Connections
 await mysqlConn.end(); // close MySQL connection
 console.log('MySQL connection closed.');
