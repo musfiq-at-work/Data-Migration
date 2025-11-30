@@ -1,10 +1,15 @@
 import { MySQLConnection } from './DB/mysql.js'
 import { connectPostgres } from "./DB/postgres.js";
 import { 
-  testConnections, transferUsers, levelPermissions, countries,
-  currencies, companies, overSeasOffices, paymentTerms, destinations
+  initialization, testConnections, transferUsers, levelPermissions, countries,
+  currencies, companies, overSeasOffices, paymentTerms, destinations,
+  banks, productTypes, products, fabrics
 } from './func/index.js'
 import dotenv from "dotenv";
+
+import loadAuthorizations from './func/loader/authorizationLoader.js';
+import loadDepartments from './func/loader/departmentLoader.js';
+import loadLevels from './func/loader/levelLoader.js';
 
 dotenv.config();
 
@@ -12,6 +17,10 @@ dotenv.config();
 const mysqlConn = await MySQLConnection();
 const pgPool = connectPostgres();
 
+await initialization(mysqlConn, pgPool);
+await loadAuthorizations(pgPool);
+await loadDepartments(pgPool);
+await loadLevels(pgPool);
 // await testConnections(mysqlConn, pgPool); 
 // await transferUsers(mysqlConn, pgPool);
 // await levelPermissions(mysqlConn, pgPool);
@@ -20,7 +29,12 @@ const pgPool = connectPostgres();
 // await companies(mysqlConn, pgPool);
 // await overSeasOffices(mysqlConn, pgPool);
 // await paymentTerms(mysqlConn, pgPool);
-await destinations(mysqlConn, pgPool);
+// await destinations(mysqlConn, pgPool);
+// await banks(mysqlConn, pgPool);
+// await productTypes(mysqlConn, pgPool);
+// await products(mysqlConn, pgPool);
+// await fabrics(mysqlConn, pgPool);
+
 // Close Connections
 await mysqlConn.end(); // close MySQL connection
 console.log('MySQL connection closed.');
