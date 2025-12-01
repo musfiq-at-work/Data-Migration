@@ -3,13 +3,11 @@ import { connectPostgres } from "./DB/postgres.js";
 import { 
   initialization, testConnections, transferUsers, levelPermissions, countries,
   currencies, companies, overSeasOffices, paymentTerms, destinations,
-  banks, productTypes, products, fabrics
+  banks, productTypes, products, fabrics,
+
+  loadAuthorizations, loadDepartments, loadLevels, loadModules
 } from './func/index.js'
 import dotenv from "dotenv";
-
-import loadAuthorizations from './func/loader/authorizationLoader.js';
-import loadDepartments from './func/loader/departmentLoader.js';
-import loadLevels from './func/loader/levelLoader.js';
 
 dotenv.config();
 
@@ -17,10 +15,11 @@ dotenv.config();
 const mysqlConn = await MySQLConnection();
 const pgPool = connectPostgres();
 
-await initialization(mysqlConn, pgPool);
-await loadAuthorizations(pgPool);
-await loadDepartments(pgPool);
-await loadLevels(pgPool);
+// await initialization(mysqlConn, pgPool);
+// await loadAuthorizations(pgPool);
+// await loadDepartments(pgPool);
+// await loadLevels(pgPool);
+// await loadModules(pgPool);
 // await testConnections(mysqlConn, pgPool); 
 // await transferUsers(mysqlConn, pgPool);
 // await levelPermissions(mysqlConn, pgPool);

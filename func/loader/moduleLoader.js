@@ -15,7 +15,7 @@ async function loadModules(pgPool) {
     // 🔥 client.query returns a COPY stream — pgPool.query does NOT
     const pgStream = client.query(copyFrom(copySql));
 
-    const fileStream = fs.createReadStream("./func/loader/modules.sql");
+    const fileStream = fs.createReadStream("./func/loader/sql/modules.sql");
 
     await new Promise((resolve, reject) => {
       fileStream

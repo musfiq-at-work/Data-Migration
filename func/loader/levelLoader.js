@@ -15,7 +15,7 @@ async function loadLevels(pgPool) {
     // 🔥 client.query returns a COPY stream — pgPool.query does NOT
     const pgStream = client.query(copyFrom(copySql));
 
-    const fileStream = fs.createReadStream("./func/loader/level.sql");
+    const fileStream = fs.createReadStream("./func/loader/sql/level.sql");
 
     await new Promise((resolve, reject) => {
       fileStream

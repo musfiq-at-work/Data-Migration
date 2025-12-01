@@ -15,7 +15,7 @@ async function loadDepartments(pgPool) {
     // 🔥 client.query returns a COPY stream — pgPool.query does NOT
     const pgStream = client.query(copyFrom(copySql));
 
-    const fileStream = fs.createReadStream("./func/loader/departments.sql");
+    const fileStream = fs.createReadStream("./func/loader/sql/departments.sql");
 
     await new Promise((resolve, reject) => {
       fileStream

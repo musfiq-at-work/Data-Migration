@@ -17,7 +17,7 @@ async function loadAuthorizations(pgPool) {
     // 🔥 client.query returns a COPY stream — pgPool.query does NOT
     const pgStream = client.query(copyFrom(copySql));
 
-    const fileStream = fs.createReadStream("./func/loader/authorizations.sql");
+    const fileStream = fs.createReadStream("./func/loader/sql/authorizations.sql");
 
     await new Promise((resolve, reject) => {
       fileStream

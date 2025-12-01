@@ -1,3 +1,4 @@
+// Exporting all migration functions from their respective files
 export { initialization } from './initialization.js';
 export { testConnections } from './testConnection.js';
 export { transferUsers } from './admin/transferUsers.js';
@@ -12,3 +13,10 @@ export { banks } from './library/bank.js';
 export { productTypes } from './library/productTypes.js';
 export { products } from './library/products.js';
 export { fabrics } from './library/fabrics.js';
+
+
+// Exporting loader functions
+export { default as loadAuthorizations } from './loader/authorizationLoader.js';
+export { default as loadDepartments } from './loader/departmentLoader.js';
+export { default as loadLevels } from './loader/levelLoader.js';
+export { default as loadModules } from './loader/moduleLoader.js';

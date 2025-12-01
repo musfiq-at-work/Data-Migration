@@ -8,3 +8,4 @@ BEGIN
 
     RETURN NEW; -- allow update
 END;
+
