@@ -524,3 +524,29 @@ CREATE TABLE IF NOT EXISTS public.users_history
         ON UPDATE NO ACTION
         ON DELETE SET NULL
 );
+
+
+CREATE TABLE IF NOT EXISTS public.banks_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    bank_id integer NOT NULL,
+    name character varying(100) COLLATE pg_catalog."default",
+    country_id integer,
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions NOT NULL,
+    action_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT banks_history_pkey PRIMARY KEY (id),
+    CONSTRAINT banks_history_bank_id_fkey FOREIGN KEY (bank_id)
+        REFERENCES public.banks (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT banks_history_country_id_fkey FOREIGN KEY (country_id)
+        REFERENCES public.countries (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT banks_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
