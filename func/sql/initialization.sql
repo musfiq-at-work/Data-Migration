@@ -186,10 +186,10 @@ CREATE TABLE IF NOT EXISTS public.level_permission
         ON DELETE RESTRICT
 );
 
+
 CREATE TABLE IF NOT EXISTS public.level_permission_history
 (
     id uuid NOT NULL DEFAULT gen_random_uuid(),
-    level_permission_id uuid,
     level_id integer NOT NULL,
     module_id integer NOT NULL,
     can_view boolean NOT NULL DEFAULT false,
@@ -202,6 +202,8 @@ CREATE TABLE IF NOT EXISTS public.level_permission_history
     action actions NOT NULL,
     action_by uuid,
     action_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    level_permission_id uuid,
+    past_action_time timestamp without time zone,
     CONSTRAINT level_permission_history_pkey PRIMARY KEY (id),
     CONSTRAINT level_permission_history_action_by_fkey FOREIGN KEY (action_by)
         REFERENCES public.users (id) MATCH SIMPLE
@@ -215,10 +217,6 @@ CREATE TABLE IF NOT EXISTS public.level_permission_history
         REFERENCES public.levels (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE RESTRICT,
-    CONSTRAINT level_permission_history_level_permission_id_fkey FOREIGN KEY (level_permission_id)
-        REFERENCES public.level_permission (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE SET NULL,
     CONSTRAINT level_permission_history_module_id_fkey FOREIGN KEY (module_id)
         REFERENCES public.modules (id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -525,28 +523,73 @@ CREATE TABLE IF NOT EXISTS public.users_history
         ON DELETE SET NULL
 );
 
-
 CREATE TABLE IF NOT EXISTS public.banks_history
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-    bank_id integer NOT NULL,
+    bank_id integer,
     name character varying(100) COLLATE pg_catalog."default",
     country_id integer,
     user_id uuid,
     past_action_time timestamp without time zone,
-    action_type actions NOT NULL,
-    action_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT banks_history_pkey PRIMARY KEY (id),
+    CONSTRAINT banks_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
     CONSTRAINT banks_history_bank_id_fkey FOREIGN KEY (bank_id)
         REFERENCES public.banks (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
+        ON DELETE SET NULL,
     CONSTRAINT banks_history_country_id_fkey FOREIGN KEY (country_id)
         REFERENCES public.countries (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
+        ON DELETE SET NULL,
     CONSTRAINT banks_history_user_id_fkey FOREIGN KEY (user_id)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE SET NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS public.companies_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    company_id integer,
+    name character varying(30) COLLATE pg_catalog."default",
+    country_id integer,
+    currencies_id integer,
+    email character varying(30) COLLATE pg_catalog."default",
+    phone_no character varying(18) COLLATE pg_catalog."default",
+    city character varying(15) COLLATE pg_catalog."default",
+    street text COLLATE pg_catalog."default",
+    zip_code character varying(6) COLLATE pg_catalog."default",
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT companies_history_pkey PRIMARY KEY (id),
+    CONSTRAINT companies_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT companies_history_company_id_fkey FOREIGN KEY (company_id)
+        REFERENCES public.companies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT companies_history_country_id_fkey FOREIGN KEY (country_id)
+        REFERENCES public.countries (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT companies_history_currencies_id_fkey FOREIGN KEY (currencies_id)
+        REFERENCES public.currencies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT companies_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
 );
