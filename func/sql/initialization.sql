@@ -593,3 +593,247 @@ CREATE TABLE IF NOT EXISTS public.companies_history
         ON UPDATE NO ACTION
         ON DELETE SET NULL
 );
+
+CREATE TABLE IF NOT EXISTS public.countries_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying(20) COLLATE pg_catalog."default",
+    country_code character varying(5) COLLATE pg_catalog."default",
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    country_id integer,
+    CONSTRAINT countries_history_pkey PRIMARY KEY (id),
+    CONSTRAINT countries_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT countries_history_country_id_fkey FOREIGN KEY (country_id)
+        REFERENCES public.countries (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT countries_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.currencies_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying(10) COLLATE pg_catalog."default",
+    symbol character varying(10) COLLATE pg_catalog."default",
+    currency_code character varying(5) COLLATE pg_catalog."default",
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    currency_id integer,
+    CONSTRAINT currencies_history_pkey PRIMARY KEY (id),
+    CONSTRAINT currencies_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT currencies_history_currency_id_fkey FOREIGN KEY (currency_id)
+        REFERENCES public.currencies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT currencies_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.destinations_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying(50) COLLATE pg_catalog."default",
+    country_id integer,
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    destination_id integer,
+    CONSTRAINT destinations_history_pkey PRIMARY KEY (id),
+    CONSTRAINT destinations_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT destinations_history_country_id_fkey FOREIGN KEY (country_id)
+        REFERENCES public.countries (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT destinations_history_destination_id_fkey FOREIGN KEY (destination_id)
+        REFERENCES public.destinations (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT destinations_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS public.fabrics_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    fabrics_id integer,
+    name text COLLATE pg_catalog."default",
+    product_type_id integer,
+    description character varying(255) COLLATE pg_catalog."default",
+    composition text COLLATE pg_catalog."default",
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fabrics_history_pkey PRIMARY KEY (id),
+    CONSTRAINT fabrics_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT fabrics_history_fabrics_id_fkey FOREIGN KEY (fabrics_id)
+        REFERENCES public.fabrics (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT fabrics_history_product_type_id_fkey FOREIGN KEY (product_type_id)
+        REFERENCES public.product_types (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT fabrics_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS public.overseas_office_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    overseas_office_id integer,
+    name character varying(25) COLLATE pg_catalog."default",
+    email_address character varying(40) COLLATE pg_catalog."default",
+    phone_no character varying(18) COLLATE pg_catalog."default",
+    currency_id integer,
+    country_id integer,
+    city character varying(15) COLLATE pg_catalog."default",
+    zip character varying(8) COLLATE pg_catalog."default",
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT overseas_office_history_pkey PRIMARY KEY (id),
+    CONSTRAINT overseas_office_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT overseas_office_history_country_id_fkey FOREIGN KEY (country_id)
+        REFERENCES public.countries (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT overseas_office_history_currency_id_fkey FOREIGN KEY (currency_id)
+        REFERENCES public.currencies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT overseas_office_history_overseas_office_id_fkey FOREIGN KEY (overseas_office_id)
+        REFERENCES public.overseas_offices (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT overseas_office_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.payment_terms_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    payment_terms_id integer,
+    term_id integer,
+    tenor integer,
+    term_description text COLLATE pg_catalog."default",
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT payment_terms_history_pkey PRIMARY KEY (id),
+    CONSTRAINT payment_terms_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT payment_terms_history_payment_terms_id_fkey FOREIGN KEY (payment_terms_id)
+        REFERENCES public.payment_terms (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT payment_terms_history_term_id_fkey FOREIGN KEY (term_id)
+        REFERENCES public.terms (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT payment_terms_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.product_types_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    product_types_id integer,
+    name character varying(25) COLLATE pg_catalog."default",
+    is_active boolean,
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT product_types_history_pkey PRIMARY KEY (id),
+    CONSTRAINT product_types_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT product_types_history_product_types_id_fkey FOREIGN KEY (product_types_id)
+        REFERENCES public.product_types (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT product_types_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.products_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    products_id integer,
+    name character varying(255) COLLATE pg_catalog."default",
+    product_types_id integer,
+    is_active boolean,
+    user_id uuid,
+    past_action_time timestamp without time zone,
+    action_type actions,
+    action_by uuid,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT products_history_pkey PRIMARY KEY (id),
+    CONSTRAINT products_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT products_history_product_types_id_fkey FOREIGN KEY (product_types_id)
+        REFERENCES public.product_types (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT products_history_products_id_fkey FOREIGN KEY (products_id)
+        REFERENCES public.products (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT products_history_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+);
