@@ -39,7 +39,7 @@ export const countries = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into countries.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into countries - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
 

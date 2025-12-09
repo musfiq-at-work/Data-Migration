@@ -13,7 +13,14 @@ export { banks } from './library/bank.js';
 export { productTypes } from './library/productTypes.js';
 export { products } from './library/products.js';
 export { fabrics } from './library/fabrics.js';
-
+export { fabricSupplier } from './library/fabricSupplier.js';
+export { colors } from './library/colors.js';
+export { factories } from './library/factories.js';
+export { factoryBanks } from './library/factoryBanks.js';
+export { couriers } from './library/couriers.js';
+export { tnaActions } from './library/tnaActions.js';
+export { fobTypes } from './library/fobTypes.js';
+export { freightTerm } from './library/freightTerm.js';
 
 // Exporting loader functions
 export { default as loadAuthorizations } from './loader/authorizationLoader.js';

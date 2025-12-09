@@ -37,7 +37,7 @@ export const destinations = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into destinations.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into destinations - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
     console.log(`Completed transferring destinations.`);

@@ -39,7 +39,7 @@ export const overSeasOffices = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into overseas_offices.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into overseas_offices - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
     console.log(`Completed transferring overseas offices.`);

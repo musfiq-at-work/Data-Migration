@@ -48,7 +48,7 @@ export const fabrics = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into fabrics.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into fabrics - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
 

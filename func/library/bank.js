@@ -38,7 +38,7 @@ export const banks = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into banks.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into banks - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
 

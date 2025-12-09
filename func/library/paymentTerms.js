@@ -41,7 +41,7 @@ export const paymentTerms = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into payment_terms.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into payment_terms - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
     console.log(`Completed transferring payment terms.`);

@@ -3,7 +3,8 @@ import { connectPostgres } from "./DB/postgres.js";
 import { 
   initialization, testConnections, transferUsers, levelPermissions, countries,
   currencies, companies, overSeasOffices, paymentTerms, destinations,
-  banks, productTypes, products, fabrics,
+  banks, productTypes, products, fabrics, fabricSupplier, colors, factories,
+  factoryBanks, couriers, tnaActions, fobTypes, freightTerm,
 
   loadAuthorizations, loadDepartments, loadLevels, loadModules
 } from './func/index.js'
@@ -33,6 +34,14 @@ const pgPool = connectPostgres();
 // await productTypes(mysqlConn, pgPool);
 // await products(mysqlConn, pgPool);
 // await fabrics(mysqlConn, pgPool);
+// await fabricSupplier(mysqlConn, pgPool);
+// await colors(mysqlConn, pgPool);
+// await factories(mysqlConn, pgPool);
+// await factoryBanks(mysqlConn, pgPool);
+// await couriers(mysqlConn, pgPool);
+// await tnaActions(mysqlConn, pgPool);
+// await fobTypes(mysqlConn, pgPool);
+await freightTerm(mysqlConn, pgPool);
 
 // Close Connections
 await mysqlConn.end(); // close MySQL connection

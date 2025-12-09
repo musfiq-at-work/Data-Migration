@@ -40,7 +40,7 @@ export const currencies = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into currencies.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into currencies - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
 

@@ -46,7 +46,7 @@ export const companies = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into companies.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into companies - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
     console.log(`Completed transferring companies.`);

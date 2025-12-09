@@ -763,13 +763,18 @@ CREATE TABLE IF NOT EXISTS public.fabric_suppliers
     added_by uuid,
     added_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     old_pk integer,
+    email character varying(50) COLLATE pg_catalog."default",
+    country_id integer,
     CONSTRAINT fabric_suppliers_pkey PRIMARY KEY (id),
     CONSTRAINT fabric_suppliers_added_by_fkey FOREIGN KEY (added_by)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fabric_suppliers_to_country_fkey FOREIGN KEY (country_id)
+        REFERENCES public.countries (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
-
 
 CREATE TABLE IF NOT EXISTS public.fabric_suppliers_history
 (
@@ -785,6 +790,7 @@ CREATE TABLE IF NOT EXISTS public.fabric_suppliers_history
     action_by uuid,
     action_type actions,
     action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    country_id integer,
     CONSTRAINT fabric_suppliers_history_pkey PRIMARY KEY (id),
     CONSTRAINT fabric_suppliers_history_action_by_fkey FOREIGN KEY (action_by)
         REFERENCES public.users (id) MATCH SIMPLE
@@ -996,6 +1002,64 @@ CREATE TABLE IF NOT EXISTS public.freight_term
     old_pk integer,
     CONSTRAINT freight_term_pkey PRIMARY KEY (id),
     CONSTRAINT freight_term_added_by_fkey FOREIGN KEY (added_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+CREATE TABLE IF NOT EXISTS public.factory_bank
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    factory_id integer,
+    bank_id integer,
+    old_factory_id integer,
+    old_bank_id integer,
+    branch_name character varying(100) COLLATE pg_catalog."default",
+    account_no character varying(20) COLLATE pg_catalog."default",
+    account_name character varying(100) COLLATE pg_catalog."default",
+    address text COLLATE pg_catalog."default",
+    swift_code character varying(15) COLLATE pg_catalog."default",
+    old_pk integer,
+    added_by uuid,
+    added_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT factory_bank_pkey PRIMARY KEY (id),
+    CONSTRAINT factory_bank_added_by_fkey FOREIGN KEY (added_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT factory_bank_bank_id_fkey FOREIGN KEY (bank_id)
+        REFERENCES public.banks (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT factory_bank_factory_id_fkey FOREIGN KEY (factory_id)
+        REFERENCES public.factories (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+
+CREATE TABLE IF NOT EXISTS public.factory_bank_history
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    factory_bank_id integer,
+    factory_id integer,
+    bank_id integer,
+    branch_name character varying(100) COLLATE pg_catalog."default",
+    account_no character varying(20) COLLATE pg_catalog."default",
+    account_name character varying(100) COLLATE pg_catalog."default",
+    address text COLLATE pg_catalog."default",
+    swift_code character varying(15) COLLATE pg_catalog."default",
+    past_action_by uuid,
+    past_action_time timestamp without time zone,
+    action_by uuid,
+    action_type actions,
+    action_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT factory_bank_history_pkey PRIMARY KEY (id),
+    CONSTRAINT factory_bank_history_action_by_fkey FOREIGN KEY (action_by)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT factory_bank_history_past_action_by_fkey FOREIGN KEY (past_action_by)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION

@@ -42,7 +42,7 @@ export const products = async (mysqlConn, pgPool) => {
             batch
         );
         await pgPool.query(query);
-        console.log(`Inserted batch ${epoch} of ${totalBatch} into products.`);
+        console.log(`Inserted batch ${epoch} of ${totalBatch} into products - ${((epoch / totalBatch) * 100).toFixed(2)}%`);
         epoch++;
     }
     
