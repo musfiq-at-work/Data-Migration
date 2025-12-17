@@ -21,6 +21,16 @@ export { couriers } from './library/couriers.js';
 export { tnaActions } from './library/tnaActions.js';
 export { fobTypes } from './library/fobTypes.js';
 export { freightTerm } from './library/freightTerm.js';
+export { buyers } from './library/buyers.js';
+export { buyerPaymentTerms } from './library/buyerPaymentTerms.js';
+export { buyerDestinations } from './library/buyerDestinations.js';
+export { buyerConsignees } from './library/buyerConsignee.js';
+export { buyerBanks } from './library/buyerBanks.js';
+export { buyerAdditionalClause } from './library/buyerAdditionalClause.js';
+export { buyerLatePolicies } from './library/buyerLatePolicies.js';
+export { buyerBrand } from './library/buyerBrand.js';
+export { buyerDepartments } from './library/buyerDepartments.js';
+export { buyerDepartmentSizes } from './library/buyerDepartmentSizes.js';
 
 // Exporting loader functions
 export { default as loadAuthorizations } from './loader/authorizationLoader.js';

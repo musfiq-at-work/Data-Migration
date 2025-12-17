@@ -1,10 +1,11 @@
 import { MySQLConnection } from './DB/mysql.js'
 import { connectPostgres } from "./DB/postgres.js";
 import { 
-  initialization, testConnections, transferUsers, levelPermissions, countries,
-  currencies, companies, overSeasOffices, paymentTerms, destinations,
-  banks, productTypes, products, fabrics, fabricSupplier, colors, factories,
-  factoryBanks, couriers, tnaActions, fobTypes, freightTerm,
+  initialization, testConnections, transferUsers, levelPermissions, countries, currencies, 
+  companies, overSeasOffices, paymentTerms, destinations, banks, productTypes, products, 
+  fabrics, fabricSupplier, colors, factories, factoryBanks, couriers, tnaActions, fobTypes, 
+  freightTerm, buyers, buyerPaymentTerms, buyerDestinations, buyerConsignees, buyerBanks,
+  buyerAdditionalClause, buyerLatePolicies, buyerBrand, buyerDepartments, buyerDepartmentSizes,
 
   loadAuthorizations, loadDepartments, loadLevels, loadModules
 } from './func/index.js'
@@ -41,7 +42,17 @@ const pgPool = connectPostgres();
 // await couriers(mysqlConn, pgPool);
 // await tnaActions(mysqlConn, pgPool);
 // await fobTypes(mysqlConn, pgPool);
-await freightTerm(mysqlConn, pgPool);
+// await freightTerm(mysqlConn, pgPool);
+// await buyers(mysqlConn, pgPool);
+// await buyerPaymentTerms(mysqlConn, pgPool);
+// await buyerDestinations(mysqlConn, pgPool);
+// await buyerConsignees(mysqlConn, pgPool);
+// await buyerBanks(mysqlConn, pgPool);
+// await buyerAdditionalClause(mysqlConn, pgPool);
+// await buyerLatePolicies(mysqlConn, pgPool);
+// await buyerBrand(mysqlConn, pgPool);
+// await buyerDepartments(mysqlConn, pgPool);
+await buyerDepartmentSizes(mysqlConn, pgPool);
 
 // Close Connections
 await mysqlConn.end(); // close MySQL connection
