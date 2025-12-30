@@ -34,6 +34,7 @@ export { buyerDepartmentSizes } from './library/buyerDepartmentSizes.js';
 export { seasons } from './library/season.js';
 export { teams } from './library/teams.js';
 export { teamMember } from './library/teamMember.js';
+export { companyBank } from './library/companyBank.js';
 
 // Exporting loader functions
 export { default as loadAuthorizations } from './loader/authorizationLoader.js';

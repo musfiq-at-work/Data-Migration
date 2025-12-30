@@ -6,7 +6,7 @@ import {
   fabrics, fabricSupplier, colors, factories, factoryBanks, couriers, tnaActions, fobTypes, 
   freightTerm, buyers, buyerPaymentTerms, buyerDestinations, buyerConsignees, buyerBanks,
   buyerAdditionalClause, buyerLatePolicies, buyerBrand, buyerDepartments, buyerDepartmentSizes,
-  seasons, teams, teamMember,
+  seasons, teams, teamMember, companyBank,
 
   loadAuthorizations, loadDepartments, loadLevels, loadModules
 } from './func/index.js'
@@ -56,7 +56,8 @@ const pgPool = connectPostgres();
 // await buyerDepartmentSizes(mysqlConn, pgPool);
 // await seasons(mysqlConn, pgPool);
 // await teams(mysqlConn, pgPool);
-await teamMember(mysqlConn, pgPool);
+// await teamMember(mysqlConn, pgPool);
+// await companyBank(mysqlConn, pgPool);
 
 // Close Connections
 await mysqlConn.end(); // close MySQL connection
