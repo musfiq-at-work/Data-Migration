@@ -35,6 +35,10 @@ export { seasons } from './library/season.js';
 export { teams } from './library/teams.js';
 export { teamMember } from './library/teamMember.js';
 export { companyBank } from './library/companyBank.js';
+export { buyerOrders } from './merchandising/buyerOrders.js';
+export { orderDetails } from './merchandising/orderDetails.js';
+export { shipmentDetails } from './merchandising/shipmentDetails.js';
+export { shipmentItemDetails } from './merchandising/shipmentItemDetails.js';
 
 // Exporting loader functions
 export { default as loadAuthorizations } from './loader/authorizationLoader.js';
