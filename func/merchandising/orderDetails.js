@@ -55,6 +55,11 @@ export const orderDetails = async (mysqlConn, pgPool) => {
     const totalBatch = Math.ceil(rows.length / 100);
     let epoch = 1
 
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN order_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN product_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN product_type_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN fabric_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN supplier_id DROP NOT NULL`);
     for (const batch of batches) {
         const query = format(
             `INSERT INTO order_styles (
@@ -106,6 +111,12 @@ export const orderDetails = async (mysqlConn, pgPool) => {
         OR fabric_id IS NULL
         OR supplier_id IS NULL;`
     );
+
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN order_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN product_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN product_type_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN fabric_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE order_styles ALTER COLUMN supplier_id SET NOT NULL`);
 
     console.log(`Completed transferring order_details.`);
 

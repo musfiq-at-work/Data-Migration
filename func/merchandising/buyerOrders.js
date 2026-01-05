@@ -68,6 +68,12 @@ export const buyerOrders = async (mysqlConn, pgPool) => {
     const totalBatch = Math.ceil(rows.length / 100);
     let epoch = 1
 
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN buyer_id DROP NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN season_id DROP NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN team_id DROP NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN brand_id DROP NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN department_id DROP NOT NULL;`);
+
     for (const batch of batches) {
         const query = format(
             `INSERT INTO buyer_orders (
@@ -131,7 +137,19 @@ export const buyerOrders = async (mysqlConn, pgPool) => {
 
     console.log(`Cleaning up buyer_orders with missing foreign keys...`);
 
-    await pgPool.query(`DELETE FROM BUYER_ORDERS WHERE BUYER_ID IS NULL OR TEAM_ID IS NULL;`);
+    await pgPool.query(`delete from buyer_orders 
+        where buyer_id is null 
+        or season_id is null 
+        or team_id is null
+        or brand_id is null
+        or department_id is null;
+    `);
+
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN buyer_id SET NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN season_id SET NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN team_id SET NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN brand_id SET NOT NULL;`);
+    await pgPool.query(`ALTER TABLE buyer_orders ALTER COLUMN department_id SET NOT NULL;`);
 
     console.log(`Completed transferring buyer_orders.`);
 };

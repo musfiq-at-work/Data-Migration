@@ -39,6 +39,8 @@ export { buyerOrders } from './merchandising/buyerOrders.js';
 export { orderDetails } from './merchandising/orderDetails.js';
 export { shipmentDetails } from './merchandising/shipmentDetails.js';
 export { shipmentItemDetails } from './merchandising/shipmentItemDetails.js';
+export { factoryOrder } from './merchandising/factoryOrder.js';
+export { factoryShipmentDetails } from './merchandising/factoryShipmentDetails.js';
 
 // Exporting loader functions
 export { default as loadAuthorizations } from './loader/authorizationLoader.js';

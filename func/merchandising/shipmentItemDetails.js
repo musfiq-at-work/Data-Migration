@@ -42,6 +42,10 @@ export const shipmentItemDetails = async (mysqlConn, pgPool) => {
     const totalBatch = Math.ceil(rows.length / 100);
     let epoch = 1
 
+    // Make shipment_detail_id and color_id nullable before inserting
+    await pgPool.query(`ALTER TABLE shipment_item_details ALTER COLUMN shipment_detail_id DROP NOT NULL;`);
+    await pgPool.query(`ALTER TABLE shipment_item_details ALTER COLUMN color_id DROP NOT NULL;`);
+
     for(const batch of batches) {
         const query = format(
             `INSERT INTO shipment_item_details (
@@ -66,7 +70,16 @@ export const shipmentItemDetails = async (mysqlConn, pgPool) => {
         FROM colors c
         WHERE sid.old_color_id = c.old_pk`);
 
-    await pgPool.query(`delete from shipment_detail_colors where color_qty is null;`);
+    await pgPool.query(`
+        DELETE FROM shipment_item_details
+        WHERE shipment_detail_id IS NULL
+		OR color_id IS NULL
+        OR quantity IS NULL;
+    `);
+
+    await pgPool.query(`ALTER TABLE shipment_item_details ALTER COLUMN shipment_detail_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_item_details ALTER COLUMN color_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_item_details ALTER COLUMN quantity SET NOT NULL`);
 
     console.log(`Completed transferring shipment_item_details.`);
 }

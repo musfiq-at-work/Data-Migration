@@ -62,6 +62,15 @@ export const shipmentDetails = async (mysqlConn, pgPool) => {
     const totalBatch = Math.ceil(rows.length / 100);
     let epoch = 1;
 
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN order_style_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN destination_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN payment_term_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN size_id DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN lot_quantity DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN fob_rate DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN etd_date DROP NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN handover_date DROP NOT NULL`);
+
     for (const batch of batches) {
         const query = format(
             `INSERT INTO shipment_details (
@@ -101,7 +110,25 @@ export const shipmentDetails = async (mysqlConn, pgPool) => {
     );
 
     console.log(`Cleaning up shipment_details with null order_style_id...`);
-    await pgPool.query(`delete from shipment_details where order_style_id is null;`);
+    await pgPool.query(`DELETE FROM shipment_details
+        WHERE order_style_id IS NULL
+		OR destination_id IS NULL
+        OR size_id IS NULL
+        OR lot_quantity IS NULL
+        OR fob_rate IS NULL
+		OR payment_term_id IS NULL
+        OR etd_date IS NULL
+        OR handover_date IS NULL;
+    `);
+
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN order_style_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN destination_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN payment_term_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN size_id SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN lot_quantity SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN fob_rate SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN etd_date SET NOT NULL`);
+    await pgPool.query(`ALTER TABLE shipment_details ALTER COLUMN handover_date SET NOT NULL`);
 
     console.log(`Completed transferring shipment_details.`);
 };

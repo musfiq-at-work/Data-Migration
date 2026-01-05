@@ -24,7 +24,7 @@ export const factoryOrder = async (mysqlConn, pgPool) => {
         old_pk: parseInt(id),
         old_order_id: parseInt(order_id),
         factory_order_date,
-        approval_status
+        approval_status: approval_status === 'N' ? 0 : Number(approval_status)
     }));
 
     const values = data.map(fo => [
@@ -38,6 +38,8 @@ export const factoryOrder = async (mysqlConn, pgPool) => {
     const batches = chunkArray(values, 100);
     const totalBatch = Math.ceil(rows.length / 100);
     let epoch = 1
+
+    await pgPool.query(`ALTER TABLE factory_orders ALTER COLUMN order_id DROP NOT NULL;`);
 
     for (const batch of batches) {
         const query = format(
@@ -56,6 +58,18 @@ export const factoryOrder = async (mysqlConn, pgPool) => {
         SET order_id = bo.id
         FROM buyer_orders bo
         WHERE fo.old_order_id = bo.old_pk;`);
+
+    console.log(`Cleaning up factory_orders with null order_id...`);
+    await pgPool.query(`delete from factory_orders where order_id is null`);
+
+    await pgPool.query(`
+        DELETE FROM factory_orders
+        WHERE order_id IS NULL
+		OR factory_order_date IS NULL;
+    `);
+
+    await pgPool.query(`ALTER TABLE factory_orders ALTER COLUMN order_id SET NOT NULL;`)
+    await pgPool.query(`ALTER TABLE factory_orders ALTER COLUMN factory_order_date SET NOT NULL;`)
 
     console.log(`Factory orders transfer completed.`);
 }

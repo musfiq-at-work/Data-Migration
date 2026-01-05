@@ -7,7 +7,7 @@ import {
   freightTerm, buyers, buyerPaymentTerms, buyerDestinations, buyerConsignees, buyerBanks,
   buyerAdditionalClause, buyerLatePolicies, buyerBrand, buyerDepartments, buyerDepartmentSizes,
   seasons, teams, teamMember, companyBank, buyerOrders, orderDetails, shipmentDetails, 
-  shipmentItemDetails,
+  shipmentItemDetails, factoryOrder, factoryShipmentDetails,
 
   loadAuthorizations, loadDepartments, loadLevels, loadModules
 } from './func/index.js'
@@ -63,7 +63,9 @@ try {
   // await buyerOrders(mysqlConn, pgPool);
   // await orderDetails(mysqlConn, pgPool);
   // await shipmentDetails(mysqlConn, pgPool);
-  await shipmentItemDetails(mysqlConn, pgPool);
+  // await shipmentItemDetails(mysqlConn, pgPool);
+  // await factoryOrder(mysqlConn, pgPool);
+  // await factoryShipmentDetails(mysqlConn, pgPool);
 }
 catch (error) {
     console.error('Error during migration:', error);
